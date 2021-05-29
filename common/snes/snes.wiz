@@ -1,4 +1,19 @@
 namespace snes {
+
+    union u8_16
+    {
+        bytes : [u8;2],
+        word : u16
+    }
+
+    struct Dma {
+        control : u8,
+        mdma_dest : u8,
+        src_address : u8_16,
+        src_address_bank : u8,
+        mdma_size : u8_16,
+    }
+
     namespace ppu {
         extern writeonly brightness @ 0x2100 : u8;
         let BRIGHTNESS_FORCE_BLANK = 0x80;
@@ -407,163 +422,13 @@ namespace snes {
         let HDMA_LINE_COUNTER_REPEATED = 0x80;
     }
 
-    namespace dma0 {
-        extern writeonly control @ 0x4300 : u8;
-        extern writeonly mdma_dest @ 0x4301 : u8;
-        extern writeonly src_address_l @ 0x4302 : u8;
-        extern writeonly src_address_h @ 0x4303 : u8;
-        extern writeonly src_address_bank @ 0x4304 : u8;
-        extern writeonly src_address_hl @ 0x4302 : u16;
-        extern writeonly mdma_size_l @ 0x4305 : u8;
-        extern writeonly mdma_size_h @ 0x4306 : u8;
-        extern writeonly mdma_size_hl @ 0x4305 : u16;
-        extern writeonly hdma_indirect_address_l @ 0x4305 : u8;
-        extern writeonly hdma_indirect_address_h @ 0x4306 : u8;
-        extern writeonly hdma_indirect_address_bank @ 0x4307 : u8;
-        extern writeonly hdma_indirect_address_hl @ 0x4305 : u16;
-        extern writeonly hdma_table_address_l @ 0x4308 : u8;
-        extern writeonly hdma_table_address_h @ 0x4309 : u8;
-        extern writeonly hdma_table_address_hl @ 0x4308 : u16;
-        extern writeonly hdma_line_counter @ 0x430A : u8;
-    }
+    extern var dma0 @ 0x4300 : Dma;
+    extern var dma1 @ 0x4310 : Dma;
+    extern var dma2 @ 0x4320 : Dma;
+    extern var dma3 @ 0x4330 : Dma;
+    extern var dma4 @ 0x4340 : Dma;
+    extern var dma5 @ 0x4350 : Dma;
+    extern var dma6 @ 0x4360 : Dma;
+    extern var dma7 @ 0x4370 : Dma;
 
-    namespace dma1 {
-        extern writeonly control @ 0x4310 : u8;
-        extern writeonly mdma_dest @ 0x4311 : u8;
-        extern writeonly src_address_l @ 0x4312 : u8;
-        extern writeonly src_address_h @ 0x4313 : u8;
-        extern writeonly src_address_bank @ 0x4314 : u8;
-        extern writeonly src_address_hl @ 0x4312 : u16;
-        extern writeonly mdma_size_l @ 0x4315 : u8;
-        extern writeonly mdma_size_h @ 0x4316 : u8;
-        extern writeonly mdma_size_hl @ 0x4315 : u16;
-        extern writeonly hdma_indirect_address_l @ 0x4315 : u8;
-        extern writeonly hdma_indirect_address_h @ 0x4316 : u8;
-        extern writeonly hdma_indirect_address_bank @ 0x4317 : u8;
-        extern writeonly hdma_indirect_address_hl @ 0x4315 : u16;
-        extern writeonly hdma_table_address_l @ 0x4318 : u8;
-        extern writeonly hdma_table_address_h @ 0x4319 : u8;
-        extern writeonly hdma_table_address_hl @ 0x4318 : u16;
-        extern writeonly hdma_line_counter @ 0x431A : u8;
-    }
-
-    namespace dma2 {
-        extern writeonly control @ 0x4320 : u8;
-        extern writeonly mdma_dest @ 0x4321 : u8;
-        extern writeonly src_address_l @ 0x4322 : u8;
-        extern writeonly src_address_h @ 0x4323 : u8;
-        extern writeonly src_address_bank @ 0x4324 : u8;
-        extern writeonly src_address_hl @ 0x4322 : u16;
-        extern writeonly mdma_size_l @ 0x4325 : u8;
-        extern writeonly mdma_size_h @ 0x4326 : u8;
-        extern writeonly mdma_size_hl @ 0x4325 : u16;
-        extern writeonly hdma_indirect_address_l @ 0x4325 : u8;
-        extern writeonly hdma_indirect_address_h @ 0x4326 : u8;
-        extern writeonly hdma_indirect_address_bank @ 0x4327 : u8;
-        extern writeonly hdma_indirect_address_hl @ 0x4325 : u16;
-        extern writeonly hdma_table_address_l @ 0x4328 : u8;
-        extern writeonly hdma_table_address_h @ 0x4329 : u8;
-        extern writeonly hdma_table_address_hl @ 0x4328 : u16;
-        extern writeonly hdma_line_counter @ 0x432A : u8;
-    }
-
-    namespace dma3 {
-        extern writeonly control @ 0x4330 : u8;
-        extern writeonly mdma_dest @ 0x4331 : u8;
-        extern writeonly src_address_l @ 0x4332 : u8;
-        extern writeonly src_address_h @ 0x4333 : u8;
-        extern writeonly src_address_bank @ 0x4334 : u8;
-        extern writeonly src_address_hl @ 0x4332 : u16;
-        extern writeonly mdma_size_l @ 0x4335 : u8;
-        extern writeonly mdma_size_h @ 0x4336 : u8;
-        extern writeonly mdma_size_hl @ 0x4335 : u16;
-        extern writeonly hdma_indirect_address_l @ 0x4335 : u8;
-        extern writeonly hdma_indirect_address_h @ 0x4336 : u8;
-        extern writeonly hdma_indirect_address_bank @ 0x4337 : u8;
-        extern writeonly hdma_indirect_address_hl @ 0x4335 : u16;
-        extern writeonly hdma_table_address_l @ 0x4338 : u8;
-        extern writeonly hdma_table_address_h @ 0x4339 : u8;
-        extern writeonly hdma_table_address_hl @ 0x4338 : u16;
-        extern writeonly hdma_line_counter @ 0x433A : u8;
-    }
-
-    namespace dma4 {
-        extern writeonly control @ 0x4340 : u8;
-        extern writeonly mdma_dest @ 0x4341 : u8;
-        extern writeonly src_address_l @ 0x4342 : u8;
-        extern writeonly src_address_h @ 0x4343 : u8;
-        extern writeonly src_address_bank @ 0x4344 : u8;
-        extern writeonly src_address_hl @ 0x4342 : u16;
-        extern writeonly mdma_size_l @ 0x4345 : u8;
-        extern writeonly mdma_size_h @ 0x4346 : u8;
-        extern writeonly mdma_size_hl @ 0x4345 : u16;
-        extern writeonly hdma_indirect_address_l @ 0x4345 : u8;
-        extern writeonly hdma_indirect_address_h @ 0x4346 : u8;
-        extern writeonly hdma_indirect_address_bank @ 0x4347 : u8;
-        extern writeonly hdma_indirect_address_hl @ 0x4345 : u16;
-        extern writeonly hdma_table_address_l @ 0x4348 : u8;
-        extern writeonly hdma_table_address_h @ 0x4349 : u8;
-        extern writeonly hdma_table_address_hl @ 0x4348 : u16;
-        extern writeonly hdma_line_counter @ 0x434A : u8;
-    }
-
-    namespace dma5 {
-        extern writeonly control @ 0x4350 : u8;
-        extern writeonly mdma_dest @ 0x4351 : u8;
-        extern writeonly src_address_l @ 0x4352 : u8;
-        extern writeonly src_address_h @ 0x4353 : u8;
-        extern writeonly src_address_bank @ 0x4354 : u8;
-        extern writeonly src_address_hl @ 0x4352 : u16;
-        extern writeonly mdma_size_l @ 0x4355 : u8;
-        extern writeonly mdma_size_h @ 0x4356 : u8;
-        extern writeonly mdma_size_hl @ 0x4355 : u16;
-        extern writeonly hdma_indirect_address_l @ 0x4355 : u8;
-        extern writeonly hdma_indirect_address_h @ 0x4356 : u8;
-        extern writeonly hdma_indirect_address_bank @ 0x4357 : u8;
-        extern writeonly hdma_indirect_address_hl @ 0x4355 : u16;
-        extern writeonly hdma_table_address_l @ 0x4358 : u8;
-        extern writeonly hdma_table_address_h @ 0x4359 : u8;
-        extern writeonly hdma_table_address_hl @ 0x4358 : u16;
-        extern writeonly hdma_line_counter @ 0x435A : u8;
-    }
-
-    namespace dma6 {
-        extern writeonly control @ 0x4360 : u8;
-        extern writeonly mdma_dest @ 0x4361 : u8;
-        extern writeonly src_address_l @ 0x4362 : u8;
-        extern writeonly src_address_h @ 0x4363 : u8;
-        extern writeonly src_address_bank @ 0x4364 : u8;
-        extern writeonly src_address_hl @ 0x4362 : u16;
-        extern writeonly mdma_size_l @ 0x4365 : u8;
-        extern writeonly mdma_size_h @ 0x4366 : u8;
-        extern writeonly mdma_size_hl @ 0x4365 : u16;
-        extern writeonly hdma_indirect_address_l @ 0x4365 : u8;
-        extern writeonly hdma_indirect_address_h @ 0x4366 : u8;
-        extern writeonly hdma_indirect_address_bank @ 0x4367 : u8;
-        extern writeonly hdma_indirect_address_hl @ 0x4365 : u16;
-        extern writeonly hdma_table_address_l @ 0x4368 : u8;
-        extern writeonly hdma_table_address_h @ 0x4369 : u8;
-        extern writeonly hdma_table_address_hl @ 0x4368 : u16;
-        extern writeonly hdma_line_counter @ 0x436A : u8;
-    }
-
-    namespace dma7 {
-        extern writeonly control @ 0x4370 : u8;
-        extern writeonly mdma_dest @ 0x4371 : u8;
-        extern writeonly src_address_l @ 0x4372 : u8;
-        extern writeonly src_address_h @ 0x4373 : u8;
-        extern writeonly src_address_bank @ 0x4374 : u8;
-        extern writeonly src_address_hl @ 0x4372 : u16;
-        extern writeonly mdma_size_l @ 0x4375 : u8;
-        extern writeonly mdma_size_h @ 0x4376 : u8;
-        extern writeonly mdma_size_hl @ 0x4375 : u16;
-        extern writeonly hdma_indirect_address_l @ 0x4375 : u8;
-        extern writeonly hdma_indirect_address_h @ 0x4376 : u8;
-        extern writeonly hdma_indirect_address_bank @ 0x4377 : u8;
-        extern writeonly hdma_indirect_address_hl @ 0x4375 : u16;
-        extern writeonly hdma_table_address_l @ 0x4378 : u8;
-        extern writeonly hdma_table_address_h @ 0x4379 : u8;
-        extern writeonly hdma_table_address_hl @ 0x4378 : u16;
-        extern writeonly hdma_line_counter @ 0x437A : u8;
-    }
 }
