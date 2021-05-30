@@ -1,0 +1,25 @@
+
+bank zeropage @ 0x00 : [vardata; 256];
+bank prg @ 0x808000 : [constdata; 0x8000];
+
+struct Info {
+    m : u16,
+    n : u8
+}
+
+in zeropage {
+    var w0, w2, w4 : u16;
+    var info : Info;
+}
+
+in prg {
+    #[mem8, idx16] func test(info : &Info in w0) 
+    {
+        info.n = a = 12;
+    }
+
+    #[fallthrough, mem8, idx16] far func fast_main() 
+    {
+        test(&info);
+    }
+}

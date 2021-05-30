@@ -6,15 +6,19 @@ import "ram";
 in prg {
     import "snes2spc";
 
-
     #[mem8, idx16]
-    inline func set_dma(dma: snes.Dma, control:u8, mdma_dest: u8, src_address: u16)
+    inline func set_dma(
+        dma: *snes.Dma in w2, 
+        control: u8 in b5,
+        mdma_dest: u8 in b6,
+        src_address: u16 in w6,
+        size: u16 in w8)
     {
         dma.control = a = control;
         dma.mdma_dest = a = mdma_dest;
-        dma.src_address.word = xx  = src_address;
+        dma.src_address.word = xx = src_address;
         dma.src_address_bank = 0;
-        dma.mdma_size_hl = xx = 0x10000 & 0xFFFF;
+        dma.mdma_size.word = xx = size;
     }
 
     #[mem8, idx16]
@@ -86,12 +90,14 @@ in prg {
         snes.ppu.vram_address_hl = xx = 0;
 
         w0 = xx = 0;
+        dmaptr = &snes.dma0 as u16;
 
         set_dma(
-            snes.dma0, 
+            dmaptr, 
             snes.dma.CONTROL_MODE_AB | snes.dma.CONTROL_MDMA_NO_INCREMENT, 
             <:&snes.ppu.vram_write_data_l,
-            &w0 as u16);
+            &w0 as u16,
+            0x10000 & 0xFFFF); // 64kb
         
         snes.dma.mdma_enable = a = snes.dma.ENABLE_0;
 
@@ -100,11 +106,18 @@ in prg {
 
         b0 = a = 0xFF;
 
-        snes.dma0.control = a = snes.dma.CONTROL_MODE_A | snes.dma.CONTROL_MDMA_NO_INCREMENT;
-        snes.dma0.mdma_dest = a = <:&snes.ppu.cgram_write_data;
-        snes.dma0.src_address.word = xx = &b0 as u16;
-        snes.dma0.src_address_bank = 0;
-        snes.dma0.mdma_size.word = xx = 512;
+        // set_dma(
+        //     &snes.dma0,
+        //     snes.dma.CONTROL_MODE_A | snes.dma.CONTROL_MDMA_NO_INCREMENT,
+        //     <:&snes.ppu.cgram_write_data,
+        //     &b0 as u16,
+        //     512);
+
+        // snes.dma0.control = a = snes.dma.CONTROL_MODE_A | snes.dma.CONTROL_MDMA_NO_INCREMENT;
+        // snes.dma0.mdma_dest = a = <:&snes.ppu.cgram_write_data;
+        // snes.dma0.src_address.word = xx = &b0 as u16;
+        // snes.dma0.src_address_bank = 0;
+        // snes.dma0.mdma_size.word = xx = 512;
 
         snes.dma.mdma_enable = a = snes.dma.ENABLE_0;
     }
