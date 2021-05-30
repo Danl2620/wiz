@@ -1,0 +1,39 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "make",
+			"script": "all",
+			"target": "all",
+			"path": "",
+			"fileName": "Makefile",
+			"uri": {
+				"$mid": 1,
+				"fsPath": "/Users/danl/proj/misc/a2gs/proj/wiz/Makefile",
+				"path": "/Users/danl/proj/misc/a2gs/proj/wiz/Makefile",
+				"scheme": "file"
+			},
+			"problemMatcher": [
+				"$gcc"
+			],
+			"group": "build",
+			"label": "make: all"
+		},
+		{
+			"label": "Build SNES hello",
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": false,
+				"panel": "shared",
+				"showReuseMessage": true,
+				"clear": false
+			},
+			"command": "/Users/danl/proj/misc/a2gs/proj/wiz/examples/snes/hello/build",
+			"problemMatcher": [
+				"$msCompile"
+			]
+		}
+	]
+}
